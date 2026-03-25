@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Edge Chatbot</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    margin:0;
+    background:#f5f5f5;
+}
+
+.website{
+    padding:40px;
+    max-width:800px;
+    margin:auto;
+}
+
+/* CHATBOT */
+
+#chat-toggle{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    background:orange;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+#chat-window{
+    position:fixed;
+    bottom:90px;
+    right:20px;
+    width:350px;
+    height:450px;
+    background:white;
+    border:1px solid #ccc;
+    display:none;
+    flex-direction:column;
+}
+
+.chat-header{
+    background:orange;
+    color:white;
+    padding:10px;
+}
+
+#chat-messages{
+    flex:1;
+    padding:10px;
+    overflow-y:auto;
+}
+
+.chat-input{
+    display:flex;
+}
+
+.chat-input input{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-top:1px solid #ccc;
+}
+
+.chat-input button{
+    width:80px;
+    border:none;
+    background:orange;
+    color:white;
+}
+
+.user{
+    text-align:right;
+    margin:5px;
+}
+
+.bot{
+    text-align:left;
+    margin:5px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="website">
+
+<h1>Build Edge Company</h1>
+
+<p>
+Build Edge is a software development company based in Ahmedabad Gujarat.
+We provide Website Development, Mobile App Development, Digital Marketing,
+Python Development and Cyber Security services.
+</p>
+
+<h2>Our Services</h2>
+
+<p>
+Website Development, Ecommerce Website, Business Website,
+Mobile App Development, SEO, Social Media Marketing,
+Python Software, Cyber Security Solutions
+</p>
+
+<h2>Contact</h2>
+
+<p>
+Phone: +91 9876543210 <br>
+Email: info@buildedge.com <br>
+Address: Ahmedabad Gujarat India
+</p>
+
+<h2>Business Hours</h2>
+
+<p>
+Monday to Saturday 10 AM to 7 PM
+</p>
+
+</div>
+
+<!-- CHATBOT -->
+
+<button id="chat-toggle">💬</button>
+
+<div id="chat-window">
+
+<div class="chat-header">
+🤖 Support Assistant
+</div>
+
+<div id="chat-messages"></div>
+
+<div class="chat-input">
+<input type="text" id="user-input" placeholder="Ask anything...">
+<button id="send">Send</button>
+</div>
+
+</div>
+
+<script>
+
+const toggle = document.getElementById("chat-toggle");
+const chatWindow = document.getElementById("chat-window");
+const messages = document.getElementById("chat-messages");
+const input = document.getElementById("user-input");
+const send = document.getElementById("send");
+
+toggle.onclick = () => {
+
+    if(chatWindow.style.display === "flex"){
+        chatWindow.style.display = "none";
+    }else{
+        chatWindow.style.display = "flex";
+        botMessage("Hello 👋 Ask me anything about Build Edge.");
+    }
+
+};
+
+send.onclick = sendMessage;
+
+input.addEventListener("keypress", function(e){
+    if(e.key === "Enter"){
+        sendMessage();
+    }
+});
+
+function sendMessage(){
+
+    let text = input.value.trim();
+
+    if(text === "") return;
+
+    addMessage(text,"user");
+
+    input.value = "";
+
+    let answer = searchWebsite(text);
+
+    botMessage(answer);
+}
+
+function addMessage(text,type){
+
+    let div = document.createElement("div");
+
+    div.className = type;
+
+    div.innerText = text;
+
+    messages.appendChild(div);
+
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function botMessage(text){
+
+    setTimeout(()=>{
+        addMessage(text,"bot");
+    },500);
+}
+
+
+/* SMART SEARCH */
+
+function searchWebsite(question){
+
+    let elements = document.querySelectorAll("p, h1, h2, h3");
+
+    question = question.toLowerCase().split(" ");
+
+    let bestText = "";
+    let bestScore = 0;
+
+    elements.forEach(el => {
+
+        let text = el.innerText.toLowerCase();
+
+        let score = 0;
+
+        question.forEach(word => {
+
+            if(text.includes(word)){
+                score++;
+            }
+
+        });
+
+        if(score > bestScore){
+            bestScore = score;
+            bestText = el.innerText;
+        }
+
+    });
+
+    if(bestScore > 1){
+        return bestText;
+    }
+
+    return "Sorry, I could not find this information on the website.";
+}
+
+</script>
+
+</body>
+</html>

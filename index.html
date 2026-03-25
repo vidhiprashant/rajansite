@@ -1018,8 +1018,12 @@
                 "Our key expertise areas:\n✓ Strategic Space Planning\n✓ Surgical MEP Execution\n✓ Optimized Cost Engineering\n✓ Zero-Friction Handover\n✓ Civil Engineering\n✓ HVAC & Electrical Systems",
                 "We excel in: Strategic space optimization, MEP system design and installation, cost-effective engineering solutions, and flawless project delivery."
             ],
+            copyright: [
+                "© 2024-2026 BuildEdge Projects. All Rights Reserved.\nThis website and its contents are the exclusive property of BuildEdge Projects. No part of this website may be reproduced or transmitted without permission.",
+                "All rights are reserved by BuildEdge Projects © 2024-2026.\nThis includes all intellectual property, design, content, and materials on this website. Unauthorized use or reproduction is prohibited."
+            ],
             default: [
-                "👋 I'm here to help! You can ask me about:\n• Our services\n• Contact information\n• Our location\n• About BuildEdge\n• Our expertise\n\nWhat would you like to know?",
+                "👋 I'm here to help! You can ask me about:\n• Our services\n• Contact information\n• Our location\n• About BuildEdge\n• Our expertise\n• Copyright & Rights\n\nWhat would you like to know?",
                 "Feel free to ask me anything about BuildEdge! What interests you?",
                 "How can I assist you today?"
             ]
@@ -1028,6 +1032,11 @@
         // Function to search for relevant keywords
         function findBestResponse(question) {
             question = question.toLowerCase().trim();
+
+            // Check for copyright/rights keywords FIRST (before "who" matching)
+            if (question.match(/copyright|rights|reserved|© |all\s+rights|whom|intellectual|trademark|license/i)) {
+                return chatbotKnowledge.copyright[Math.floor(Math.random() * chatbotKnowledge.copyright.length)];
+            }
 
             // Check for service-related keywords
             if (question.match(/service|do\s+you|offer|provide|what|build|work|do/i)) {
@@ -1045,7 +1054,7 @@
             }
 
             // Check for about/company keywords
-            if (question.match(/about|company|who|experience|history|founded|organization|team/i)) {
+            if (question.match(/about|company|experience|history|founded|organization|team/i)) {
                 return chatbotKnowledge.about[Math.floor(Math.random() * chatbotKnowledge.about.length)];
             }
 

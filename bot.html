@@ -1,0 +1,27 @@
+<input type="text" id="msg">
+<button onclick="sendMessage()">Send</button>
+
+<div id="chat"></div>
+
+<script>
+function sendMessage() {
+    let message = document.getElementById("msg").value;
+
+    if (message.trim() === "") return;
+
+    fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({msg: message})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("chat").innerHTML += "<p><strong>You:</strong> " + message + "</p>";
+        document.getElementById("chat").innerHTML += "<p><strong>Bot:</strong> " + data + "</p>";
+        document.getElementById("msg").value = "";
+    })
+    .catch(error => console.error("Error:", error));
+}
+</script>
